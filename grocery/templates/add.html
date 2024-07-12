@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{formName}}
+{% endblock title %}
+{% block content %}
+    <h1>{{ formName }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for widget in form %}
+            {{widget.label_tag}}
+            {{widget}}
+        {% endfor %}
+        <input type="submit" value="{{submit_value}}">
+    </form>
+   {{after_form|safe}}
+
+{% endblock content %}
