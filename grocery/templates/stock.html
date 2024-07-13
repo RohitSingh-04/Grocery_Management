@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+    Avaliable Stocks
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container text-center">
+        <h1 class="display-6">
+            Avaliable Items
+        </h1>
+    </div>
+    <table border="2px" class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Item name</th>
+                <th>Item Type</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ row.name }}</td>
+                    <td>{{ row.item_type }}</td>
+                    <td>{{ row.price }}</td>
+                    <td>{{ row.quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

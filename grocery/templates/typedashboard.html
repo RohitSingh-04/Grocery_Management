@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}
-    {{formName}}
+    type-dashboard
 {% endblock title %}
 {% block content %}
+    
 <div class="container text-center mb-3">
-    <h1 class="display-6">{{ formName }}</h1>
+    <h1 class="display-6">Type DashBoard</h1>
 </div>
 <div class="container">
     <div class="row justify-content-center">
@@ -16,12 +17,10 @@
             {{widget}}
         {% endfor %}
         <div class="text-center">
-            <input type="submit" class = "btn btn-primary mt-2 mb-2" value="{{submit_value}}">
+            <input type="submit" class = "btn btn-primary mt-2 mb-2" value="search">
         </div>
     </form>
 </div>
 </div>
 </div>
-   {{after_form|safe}}
-
 {% endblock content %}

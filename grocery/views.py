@@ -43,7 +43,7 @@ def home(request):
     total_price = Product.objects.annotate(total_val= F('price') * F('quantity')).aggregate(total = Sum('total_val'))['total']
 
     
-    return HttpResponse("home")
+    return render(request, 'index.html', {'total_stock': total_items, 'total_price': total_price})
 
 @login_required(login_url='/login')
 def new_type(request):
@@ -51,9 +51,14 @@ def new_type(request):
         form = TypeForm(request.POST)
         if form.is_valid():
             form.save()
+            form = TypeForm()
+            return render(request, 'add.html', {'formName': 'Add Type', 'form': form, 'submit_value': 'Add', 'after_form': '''<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> added the new type.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>'''})
 
     form = TypeForm()
-    return render(request, 'add.html', {'formName': 'Add Product Type', 'form': form, 'submit_value': 'Add'})
+    return render(request, 'add.html', {'formName': 'Add Type', 'form': form, 'submit_value': 'Add'})
 
 @login_required(login_url='/login/')
 def product_register(request):
@@ -77,3 +82,47 @@ def request_stock(request):
     
     form = RequestsForm()
     return render(request, 'add.html', {'formName': 'Request', 'form': form, 'submit_value': 'REQUEST'})
+
+@login_required(login_url='/login/')
+def avaliable_stock(request):
+    data = Product.objects.all()
+    return render(request, 'stock.html', {'data': data})
+
+@login_required(login_url='/login/')
+def search_item(request):
+    if request.method == 'POST':
+        query = request.POST['search_string']
+        similar_items_names = list(filter(lambda item: similarity_check(query, item), map(lambda x: x[0],Product.objects.values_list('name'))))
+        similar_items = Product.objects.filter(name__in = similar_items_names)
+        similar_types_names = list(filter(lambda item: similarity_check(query, item), map(lambda x: x[0],Type.objects.values_list('typename'))))
+        similar_types = Type.objects.filter(typename__in = similar_types_names)
+        return render(request, 'search.html', {'items': similar_items, 'types': similar_types})
+    return render(request, 'search.html')
+
+def similarity_check(search: str, result: str, threshold:float = 0.5) -> bool:
+    
+    """
+    Check similarity between two strings based on the proportion of matching characters.
+
+    Parameters:
+    search (str): The search string.
+    result (str): The result string to compare against.
+    threshold (float): The similarity threshold ranging from 0 to 1, where 1 is highly similar and 0 is least similar.
+
+    Returns:
+    bool: True if the similarity ratio is greater than or equal to the threshold, False otherwise.
+    """
+    if not search:
+        return False
+    
+    search_set = set(search.lower())
+    result_set = set(result.lower())
+
+    matched = sum(1 for char in search_set if char in result_set)
+    
+    return matched/len(result_set) >= threshold 
+
+@login_required(login_url='/login/')
+def type_dashboard(request):
+    form = TypeDashForm()
+    return render(request, 'typedashboard.html', {'form':form})

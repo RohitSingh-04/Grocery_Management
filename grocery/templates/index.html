@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{% block extraheads %}
+<style>
+    .hover-div {
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .hover-div:hover {
+        background-color: rgb(41, 134, 18); /* Background color on hover */
+        color: white; /* Text color on hover */
+    }
+    .hover-div2 {
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .hover-div2:hover {
+        background-color: rgb(65, 104, 187); /* Background color on hover */
+        color: white; /* Text color on hover */
+    }
+</style>
+{% endblock extraheads %}
+
+{% block content %}
+
+<div class="row mt-2">
+    <div class="col-sm-5 mb-3 ms-auto mb-sm-0">
+    <div class="card hover-div">
+        <div class="card-header">
+            Total Stock
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>{{ total_stock }}</p>
+                </footer>
+            </blockquote>
+        </div></div>
+    </div>
+<div class="col-sm-5 me-auto">
+    <div class="card hover-div">
+        <div class="card-header">
+            Total Price
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>₹ {{ total_price }}</p>
+                </footer>
+            </blockquote>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="container">
+    <h1 class="mt-2 text-center display-6">Operations</h1>
+    </div>
+
+<div class="container-fluid mt-2 row">
+    <a href = "/addType" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Add a Type of Product">
+        <div class="card-body">
+          <p class="card-text">New Type</p>
+        </div>
+    </a>
+    <a href = "/addProduct" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Add a Product">
+        <div class="card-body">
+          <p class="card-text">Add Product</p>
+        </div>
+    </a>
+    <a href = "/Request" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Request">
+        <div class="card-body">
+          <p class="card-text">Request</p>
+        </div>
+    </a>
+    <a href = "/avaliable" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Avaliable Stock">
+        <div class="card-body">
+          <p class="card-text">Avaliable Stock</p>
+        </div>
+    </a>
+    <a href = "/search" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Search">
+        <div class="card-body">
+          <p class="card-text">Search Items</p>
+        </div>
+    </a>
+        <a href = "/type" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="Type Dashboard">
+            <div class="card-body">
+              <p class="card-text">Type Dashboard</p>
+            </div>
+        </a>
+    <a href = "/logs" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Logs">
+        <div class="card-body">
+          <p class="card-text">Logs</p>
+        </div>
+    </a>
+    <a href = "/members" class="card text-decoration-none col-sm-5 mb-3 ms-auto mb-sm-0 mt-2 hover-div2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="Members">
+        <div class="card-body">
+          <p class="card-text">Member's DashBoard</p>
+        </div>
+    </a>
+
+</div>
+
+{% endblock content %}
