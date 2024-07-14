@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}
-    Search
+Search
 {% endblock title %}
 {% block content %}
 <form class="d-flex mt-2" role="search" method="post">
     {% csrf_token %}
-    <input class="form-control m-2" type="search" placeholder="Search" aria-label="Search" name="search_string" autofocus>
+    <input class="form-control m-2" type="search" placeholder="Search" aria-label="Search" name="search_string"
+        autofocus>
     <button class="btn btn-outline-success m-2" type="submit">Search</button>
 </form>
 {% if request.method == 'GET' %}
@@ -13,22 +14,39 @@
 <div class="alert alert-warning alert-dismissible fade show m-5" role="alert">
     <strong>Search</strong> above for items.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>    
+</div>
 
-    {% else %}
+{% else %}
 
-    {% for item in items %}
+{% if query %}
+    <h2 class="text-center">Showing Results for - {{ query }}</h2>
+{% endif %}
 
-    <a href="/item/{{ item.id }}">{{ item.name }}</a><br/>
-        
-    {% endfor %}
+<div class="container m-3">
+    <h4>Matched Items -</h4>
+    <ul/>
+
+        {% for item in items %}
+    
+    <li>
+        <a href="/item/{{ item.id }}" class = "mt-2">{{ item.name }}</a><br />
+    </li>
+
+{% endfor %}
+</ul/>
+    <h4>Matched Types -</h4>
+<ul/>
+
     {% for type in types %}
+<li>
+    <a href="/type/{{ type.id }}" class = "mt-2">{{ type.typename }}</a><br />
+    </li>
 
-    <a href="/type/{{ type.id }}">{{ type.typename }}</a><br/>
-        
-    {% endfor %}
+{% endfor %}
 
-    {% endif %}
+</ul/>
+</div>
+{% endif %}
 
 
 {% endblock content %}

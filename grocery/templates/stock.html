@@ -5,11 +5,18 @@
 
 
 {% block content %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="sort">
+    </form>
+    
     <div class="container text-center">
         <h1 class="display-6">
             Avaliable Items
         </h1>
     </div>
+</div>
     <table border="2px" class="table table-hover">
         <thead>
             <tr>
@@ -22,14 +29,34 @@
         </thead>
         <tbody>
             {% for row in data %}
-                <tr>
+                <tr onclick="redirect('{{ row.id }}')">
                     <td>{{ forloop.counter }}</td>
                     <td>{{ row.name }}</td>
                     <td>{{ row.item_type }}</td>
-                    <td>{{ row.price }}</td>
-                    <td>{{ row.quantity }}</td>
+                    <td>₹ {{ row.price }}</td>
+                    <td class="quantity">{{ row.quantity }}</td>
                 </tr>
             {% endfor %}
+           
         </tbody>
     </table>
+    <script>
+        function redirect(id){
+            window.location.href = `/item/${id}`;
+        }
+        const data = [...document.getElementsByClassName('quantity')];
+        data.forEach((element) => {
+            const qty = parseInt(element.innerText);
+            if (qty<=5){
+                element.style.background = 'red';
+            }
+            else if(qty<=10){
+                element.style.background = 'grey';
+            }
+            else{
+                element.style.background = 'green';
+            }
+        });
+
+    </script>
 {% endblock content %}

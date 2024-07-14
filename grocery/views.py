@@ -65,11 +65,15 @@ def product_register(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
         if form.is_valid():
-
             product = form.save(commit=False)
             product.save()
-            form.save_m2m()
-    
+        else:
+            print(form.cleaned_data)
+            product = Product.objects.filter(name=request.POST['name']).first()
+            product.delete()
+            product.quantity += form.cleaned_data['quantity']
+            product.save()
+            
     form = ProductForm()
     return render(request, 'add.html', {'formName': 'Add Product', 'form': form, 'submit_value': 'Add'})
 
@@ -78,14 +82,21 @@ def request_stock(request):
     if request.method == "POST":
         form = RequestsForm(request.POST)
         if form.is_valid():
-            form.save()
-    
+            request_instance = Requests()
+            request_instance.comment = form.cleaned_data['comment']
+            request_instance.item_type = form.cleaned_data['item_type']
+            request_instance.user = request.user
+            request_instance.save()
     form = RequestsForm()
     return render(request, 'add.html', {'formName': 'Request', 'form': form, 'submit_value': 'REQUEST'})
 
 @login_required(login_url='/login/')
 def avaliable_stock(request):
-    data = Product.objects.all()
+    if (request.method == 'POST'):
+        data = Product.objects.all().filter(quantity__gt = 0).order_by('quantity')
+    else:
+    
+        data = Product.objects.all().filter(quantity__gt = 0)
     return render(request, 'stock.html', {'data': data})
 
 @login_required(login_url='/login/')
@@ -96,7 +107,7 @@ def search_item(request):
         similar_items = Product.objects.filter(name__in = similar_items_names)
         similar_types_names = list(filter(lambda item: similarity_check(query, item), map(lambda x: x[0],Type.objects.values_list('typename'))))
         similar_types = Type.objects.filter(typename__in = similar_types_names)
-        return render(request, 'search.html', {'items': similar_items, 'types': similar_types})
+        return render(request, 'search.html', {'query':query, 'items': similar_items, 'types': similar_types})
     return render(request, 'search.html')
 
 def similarity_check(search: str, result: str, threshold:float = 0.5) -> bool:
@@ -123,6 +134,65 @@ def similarity_check(search: str, result: str, threshold:float = 0.5) -> bool:
     return matched/len(result_set) >= threshold 
 
 @login_required(login_url='/login/')
-def type_dashboard(request):
-    form = TypeDashForm()
-    return render(request, 'typedashboard.html', {'form':form})
+def type_dashboard(request, value = None):
+    
+    if request.method == "POST":
+        item_type = Type.objects.filter(typename = request.POST['typename']).first().id
+        print(item_type)
+        return redirect(f'/type/{item_type}')
+
+    types = Type.objects.all()
+    if value:
+        type_obj = Type.objects.filter(id=value).first()
+
+        products = Product.objects.filter(item_type = type_obj)
+
+        qty = 0
+        price = 0
+
+        for item in products:
+            qty+=item.quantity
+            price += item.quantity*item.price
+        
+        
+
+        return render(request, 'typedashboard.html', {'types':types, 'type': type_obj, 'items': products, 'total_items': qty, 'total_price': price})
+
+
+
+    return render(request, 'typedashboard.html', {'types':types})
+
+
+@login_required(login_url='/login/')
+def item_desc(request, value):
+    if request.method == 'POST':
+        qty = request.POST['items']
+        product = Product.objects.filter(id=request.POST['id']).first()
+        product.quantity -= int(qty)
+        product.save()
+        if product.quantity == 0:
+            return redirect('/avaliable/')
+
+    item =  Product.objects.filter(id=value).first()
+
+
+
+    return render(request, 'itemdash.html', {'item':item, 'total_amt': item.quantity*item.price})
+
+@login_required(login_url='/login/')
+def request_show(request):
+    
+
+    return render(request, 'requests.html', {'data': Requests.objects.all()})
+
+@login_required(login_url='/login/')
+def del_comment(request, value):
+    comment = Requests.objects.filter(id=value).first()
+    comment.delete()
+    return redirect('/members/')
+
+@login_required(login_url='/login/')
+def sugest(request):
+    item_sugession = Product.objects.filter(qty__lt = 6)
+    # type_sugession = Product.objects.
+    ...

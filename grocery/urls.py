@@ -12,5 +12,10 @@ urlpatterns = [
     path('Request/', view=views.request_stock),
     path('avaliable/', view=views.avaliable_stock),
     path('search/', view= views.search_item),
-    path('type/', view=views.type_dashboard)
+    path('type/', view=views.type_dashboard),
+    path('type/<int:value>/', view=views.type_dashboard),
+    path('item/<int:value>/', view= views.item_desc),
+    path('members/', view= views.request_show),
+    path('delComment/<int:value>/', view=views.del_comment),
+    path('suggestions/', view= views.sugest)
 ]

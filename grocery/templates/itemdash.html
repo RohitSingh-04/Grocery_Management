@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Items
+{% endblock title %}
+{% block content %}
+<div class="container text-center mb-3">
+    <h1 class="display-6">Item Details</h1>
+</div>
+<div class="container">
+
+<table border="2px" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <td>{{ item.name }}</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Price per item</th>
+            <td>₹  {{ item.price }}</td>
+        </tr>
+        <tr>
+            <th>Quantity</th>
+            <td>{{ item.quantity }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td><a href="/type/{{ item.item_type.id }}">
+                    {{ item.item_type }}
+                    </a></td>
+                    </tr>
+                        <tr>
+                            <th>Total Price</th>
+                            <td>₹  {{ total_amt }}</td>
+                        </tr>
+    </tbody>
+</table>
+
+</div>
+
+<form method="post" class="container m-auto text-center">
+    {% csrf_token %}
+    <input type="text" name="id" value="{{ item.id}}" hidden>
+    <input type="number" name="items" max="{{ item.quantity }}" min="1" style="border-radius: 4px;" placeholder="quantity" required>
+    <input class="btn btn-primary" type="submit" value="Buy">
+</form>
+
+{% endblock content %}
