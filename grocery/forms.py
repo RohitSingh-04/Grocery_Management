@@ -6,6 +6,9 @@ class TypeForm(forms.ModelForm):
     class Meta:
         model = Type
         fields = ['typename']
+    def clean_typename(self):
+        data = self.cleaned_data['typename']
+        return data.capitalize()
 
 class ProductForm(forms.ModelForm):
     item_type = forms.ModelChoiceField(queryset=Type.objects.all(), label="Type of Product")
@@ -19,6 +22,9 @@ class ProductForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
             visible.field.widget.attrs['id'] = 'formGroupExampleInput'
+    def clean_name(self):
+        data = self.cleaned_data['name']
+        return data.capitalize()
 
 class RequestsForm(forms.ModelForm):
     item_type = forms.ModelChoiceField(queryset=Type.objects.all(), label="Type of Product")

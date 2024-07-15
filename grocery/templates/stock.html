@@ -5,17 +5,15 @@
 
 
 {% block content %}
-<div class="container">
-    <form method="post">
+<div class="d-flex justify-content-center">
+    <form method="post" class="form-inline">
         {% csrf_token %}
-        <input type="submit" value="sort">
+        <button type="submit" title = "sort" class="btn"><img width="24" height="24" src="https://img.icons8.com/fluency/48/high-indicator-filter.png" alt="sort button"/></button>
     </form>
     
-    <div class="container text-center">
-        <h1 class="display-6">
+        <h1 class="display-6" style="margin: 0 auto;">
             Avaliable Items
         </h1>
-    </div>
 </div>
     <table border="2px" class="table table-hover">
         <thead>

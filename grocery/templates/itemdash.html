@@ -39,12 +39,20 @@
 </table>
 
 </div>
-
+{% if item.quantity %}
 <form method="post" class="container m-auto text-center">
     {% csrf_token %}
     <input type="text" name="id" value="{{ item.id}}" hidden>
-    <input type="number" name="items" max="{{ item.quantity }}" min="1" style="border-radius: 4px;" placeholder="quantity" required>
-    <input class="btn btn-primary" type="submit" value="Buy">
+    <input type="number" name="items" max="{{ item.quantity }}" min="1" style="border-radius: 4px;" placeholder="qty" required>
+    <button type="submit" class="btn" title="buy"><img width="28" height="28" src="https://img.icons8.com/fluency/48/buy.png" alt="buy"/></button>
 </form>
+
+{% else %}
+<div class="alert alert-danger text-center" role="alert">
+    <strong>{{ item.name }}</strong> is currently out of stock
+  </div>
+
+{% endif %}
+    
 
 {% endblock content %}

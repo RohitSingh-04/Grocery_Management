@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Count
 from .forms import *
 
 def login_usr(request):
@@ -20,9 +20,9 @@ def login_usr(request):
                 return redirect('/')
             else:
                 form.add_error(None, 'Invalid username or password')
-                return render(request, 'add.html', {'formName':'Login', 'form': form, 'after_form': '<p>Do not have an Account? <a href="/register/">Register</a> First!</p>', 'submit_value':'Login'})
+                return render(request, 'login_reg.html', {'formName':'Login', 'form': form, 'after_form': '<p>Do not have an Account? <a href="/register/">Register</a> First!</p>', 'submit_value':'Login'})
     form = AuthenticationForm(request=request)
-    return render(request, 'add.html', {'formName':'Login', 'form': form, 'after_form': '<p>Do not have an Account? <a href="/register/">Register</a> First!</p>', 'submit_value':'Login'})
+    return render(request, 'login_reg.html', {'formName':'Login', 'form': form, 'after_form': '<p>Do not have an Account? <a href="/register/">Register</a> First!</p>', 'submit_value':'Login'})
 
 def logout_usr(request):
     logout(request)
@@ -35,7 +35,7 @@ def user_register(request):
             form.save()
             return redirect('/login')
     form = UserCreationForm()
-    return render(request, 'add.html', {'formName': 'Registration', 'form': form, 'after_form': '<p>Already have an Account? <a href="/login/">Login</a> Insteed!</p>', 'submit_value': 'Register'})
+    return render(request, 'login_reg.html', {'formName': 'Registration', 'form': form, 'after_form': '<p>Already have an Account? <a href="/login/">Login</a> Insteed!</p>', 'submit_value': 'Register'})
 
 @login_required(login_url='/login/')
 def home(request):
@@ -69,7 +69,7 @@ def product_register(request):
             product.save()
         else:
             print(form.cleaned_data)
-            product = Product.objects.filter(name=request.POST['name']).first()
+            product = Product.objects.filter(name=request.POST['name'].capitalize()).first()
             product.delete()
             product.quantity += form.cleaned_data['quantity']
             product.save()
@@ -193,6 +193,8 @@ def del_comment(request, value):
 
 @login_required(login_url='/login/')
 def sugest(request):
-    item_sugession = Product.objects.filter(qty__lt = 6)
-    # type_sugession = Product.objects.
-    ...
+    item_sugession = Product.objects.filter(quantity__lt = 6).order_by('quantity')
+    type_sugession = [ {'item_type': Type.objects.filter(id = item['item_type']).first(), 'count' : item['count']} for item in (Product.objects.values('item_type').annotate(count = Sum('quantity')).filter(count__lt = 6).order_by('count'))]
+    print(type_sugession)
+    
+    return render(request, 'suggest.html', {'items': item_sugession, 'types': type_sugession})
