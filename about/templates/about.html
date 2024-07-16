@@ -1,10 +1,76 @@
 {% extends 'base.html' %}
 {% block title %}
-    About
+About
 {% endblock title %}
 {% block content %}
-    developed by - {{ dev }} using Django
-    Linked Profile - <a href="{{ Linkedin }}">click here</a>
-    Projects - 
-    Github - <a href="{{ github }}">click here</a>
+<div class="container d-flex justify-content-between align-items-center mt-4">
+    <div>
+
+        <h1>
+            Welcome to My Grocery Management App!
+        </h1>
+        <hr>
+        <h2>
+            About the App
+        </h2>
+
+        This app was created to make grocery shopping easier and more organized for you. Designed and developed by me
+        using Django, it helps you keep track of your grocery lists and pantry items effortlessly.
+        <hr>
+
+        <h2>
+
+            What the App Does
+        </h2>
+
+        <ul>
+
+            <li> <strong>Grocery Lists:</strong> Create and manage your grocery lists with ease. Add items, categorize
+                them, and check them off as you shop.</li>
+
+            <li><strong>Pantry Management:</strong> Keep track of what's in your pantry. Know what you have and what you
+                need tobuy next time you shop.</li>
+
+            <li><strong>Simplicity:</strong>This app is designed to be straightforward and intuitive, focusing on what
+                matters most—making your grocery shopping experience smoother.</li>
+            <li><strong>Smart Suggestions: </strong>Get notified about items that are out of stock or running low,
+                ensuring you</li>
+            never miss a crucial purchase.
+        </ul>
+        <hr>
+        <h2>
+
+            Why Use This App?
+        </h2>
+        Managing groceries can be hectic. With this app, you can simplify your shopping routine, save time, and make
+        sure you never forget an essential item again.
+
+        Get Started Now!
+        Start using my Grocery Management App today and see how easy managing your groceries can be!
+        <hr>
+        <div class="container d-flex justify-content-center">
+
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Developer</h6>
+                    <h5 class="card-title mb-2 text-center">{{ data.dev }}</h5>
+                    <p class="card-text">Django project with ❤️ & ⏱️ in 🇮🇳</p>
+                    <div class="container d-flex justify-content-center">
+                        <a href="{{ data.linkedin }}" class="card-link" title="linkedin_link" target="_blank"><img width="32" height="32"
+                                src="https://img.icons8.com/fluency/48/linkedin-circled.png"
+                                alt="linkedin-circled" /></a>
+                        <a href="{{ data.github }}" class="card-link" title="github_link" target="_blank"><img width="32" height="32"
+                                src="https://img.icons8.com/windows/32/github.png" alt="github" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-5">
+        <img src="https://img.icons8.com/fluency/240/grocery-store.png" alt="about-icon">
+    </div>
+
+</div>
+
 {% endblock content %}
