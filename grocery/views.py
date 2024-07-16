@@ -172,6 +172,10 @@ def item_desc(request, value):
         product.save()
         if product.quantity == 0:
             return redirect('/avaliable/')
+        #delete
+        if product.quantity <= -1:
+            product.delete()
+            return redirect('/avaliable/')
 
     item =  Product.objects.filter(id=value).first()
 

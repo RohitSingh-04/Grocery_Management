@@ -51,7 +51,14 @@
 <div class="alert alert-danger text-center" role="alert">
     <strong>{{ item.name }}</strong> is currently out of stock
   </div>
-
+  
+  <form method="post" class="container m-auto text-center">
+    {% csrf_token %}
+    <input type="text" name="id" value="{{ item.id}}" hidden>
+    <input type="number" name="items" value="1" hidden>
+    <strong>{{ item.name }}</strong> is out of stock! to remove it click on this button
+    <button type="submit" class="btn" title="delete"><img width="28" height="28" src="https://img.icons8.com/fluency/48/delete-trash.png" alt="delete"/></button>
+</form>
 {% endif %}
     
 
